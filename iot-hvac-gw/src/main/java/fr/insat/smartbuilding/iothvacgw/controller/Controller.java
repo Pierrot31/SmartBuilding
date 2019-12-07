@@ -27,7 +27,7 @@ public class Controller {
 	@PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
 	public Map<String, Object> add(@RequestBody Map<String, Object> payload) {
 			
-		VirtualActuator newTempActuator = new VirtualActuator(payload.get("location").toString(),Boolean.parseBoolean((String) payload.get("status")));
+		VirtualActuator newTempActuator = new VirtualActuator(payload.get("location").toString(),(Boolean) payload.get("status"));
 		actuators.put(newTempActuator.getId(), newTempActuator);
 		
 		Map<String, Object> response = new HashMap<String, Object>();
