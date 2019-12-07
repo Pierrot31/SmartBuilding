@@ -2,7 +2,7 @@ package fr.insat.smartbuilding.helper.virtual;
 
 import java.util.UUID;
 
-public abstract class VirtualActuator {
+public class VirtualActuator {
 	
 	private UUID id;
 	private String location;

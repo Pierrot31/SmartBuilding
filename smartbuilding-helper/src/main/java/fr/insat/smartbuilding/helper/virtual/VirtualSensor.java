@@ -1,19 +1,21 @@
 package fr.insat.smartbuilding.helper.virtual;
 
 import java.util.UUID;
+import java.time.LocalDateTime;
 import java.util.Random;
 
-public abstract class VirtualSensor {
+public class VirtualSensor {
 
 	private UUID id;
 	private String location;
-	private Random value;
-	private float[] program;
+	private float value;
+	private float[] program = null;
+	private Boolean programActivated = false;
 	
-	public VirtualSensor(String location){
+	public VirtualSensor(String location, int range){
 		this.id = UUID.randomUUID();
 		this.location = location;
-		this.value = new Random();
+		this.value = new Random().nextFloat()*range;
 	}
 	
 	public UUID getId(){
@@ -24,16 +26,31 @@ public abstract class VirtualSensor {
 		return this.location;
 	}
 	
-	public float[] getProgram() {
-		return this.program;
-	}
-	
 	public void setProgram(float[] program) {
 		this.program = program;
+		programActivated = true;
 	}
 	
-	public abstract float readValue();
+	public void startProgram() {
+		if (program != null) {
+			programActivated = true;
+		}
+	}
 	
-	public abstract void setValue();
+	public void stopProgram() {
+		programActivated = false;
+	}
+	
+	public float readValue() {
+		float data = value;
+		if (programActivated) {
+			data = program[LocalDateTime.now().getMinute()];	
+		}
+		return data;
+	}
+	
+	public void setValue(float value) {
+		this.value = value;
+	};
 	
 }
