@@ -3,13 +3,11 @@ package fr.insat.smartbuilding.iottempgw.controller;
 import fr.insat.smartbuilding.helper.virtual.*;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.CDL;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,7 +66,7 @@ public class Controller {
 	
 	/*
 	 * In order to set the value for an existing sensor, this request is to be received :
-	 * curl -XPUT -H "Content-type: application/json" -d '{"program": "[00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]"}' '127.0.0.1:8001/set/{id}'
+	 * curl -XPUT -H "Content-type: application/json" -d '{"program": "[1,2,3,4,5,6,7,8,9,10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]"}' '127.0.0.1:8001/program/{id}'
 	 */
 	@PutMapping("/program/{id}")
 	public String program(@PathVariable("id") UUID id, @RequestBody String payload)
@@ -79,18 +77,34 @@ public class Controller {
 		JSONObject jsonObject = new JSONObject(payload);
 		JSONArray jsonArray = new JSONArray(jsonObject.get("program").toString());
 		int length=jsonArray.length();
-	
-		System.out.println("Content of jsonArray :"+jsonArray.toString());
-		
+			
 		for (int i = 0; i < length; i++) {
 			program[i]=Float.parseFloat(jsonArray.get(i).toString());
 		}
 		
-		
 		sensors.get(id).setProgram(program);
 		
 		return jsonObject.get("program").toString();
-	}	
+	}
+	
+	/*
+	 * In order to start or stop a program :
+	 * curl -XPOST -H "Content-type: application/json" -d '{"status": "true"}' '127.0.0.1:8001/program/{id}'
+	 * UUID of the sensor will be returned.
+	 */
+	@PostMapping(path = "/program/{id}", consumes = "application/json", produces = "application/json")
+	public Map<String, Object> program(@PathVariable("id") UUID id, @RequestBody Map<String, Object> payload) {
+		
+		if (payload.get("status").equals("true")) {
+			sensors.get(id).startProgram();
+		} else {
+			sensors.get(id).stopProgram();
+		}
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("status",payload.get("status"));
+		return response ;
+	}
 }
 
 
