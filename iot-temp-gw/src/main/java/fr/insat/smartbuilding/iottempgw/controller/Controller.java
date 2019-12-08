@@ -29,7 +29,7 @@ public class Controller {
 	@PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
 	public Map<String, Object> add(@RequestBody Map<String, Object> payload) {
 			
-		VirtualSensor newTempSensor = new VirtualSensor(payload.get("location").toString(),Integer.parseInt((String) payload.get("value")));
+		VirtualSensor newTempSensor = new VirtualSensor(payload.get("location").toString(),(int) payload.get("value"));
 		sensors.put(newTempSensor.getId(), newTempSensor);
 		
 		Map<String, Object> response = new HashMap<String, Object>();
