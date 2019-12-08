@@ -31,4 +31,26 @@ public class VirtualRoom {
 	}
 	
 	
+	public void addSensor(URI gateway,String sensorname,Float range) {
+		
+		SensorIot newSensor = new SensorIot(gateway,this.name+"_"+sensorname,range);
+		
+		this.sensoriots.put(sensorname, newSensor);
+	}
+	
+	public Float readSensorValue(String sensorname) {
+		return sensoriots.get(sensorname).getValue();
+	}
+	
+	public void setSensorValue(String sensorname, Float value) {
+		sensoriots.get(sensorname).setValue(value);
+	}
+	
+	public void addSensorProgram(String sensorname, float[] program) {
+		sensoriots.get(sensorname).addProgram(program);
+	}
+	
+	public void setSensorProgram(String sensorname, Boolean status) {
+		sensoriots.get(sensorname).setProgram(status);
+	}
 }
