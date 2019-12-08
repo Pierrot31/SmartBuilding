@@ -14,7 +14,7 @@ public class ProgramList {
 	 * Night time will be around 10 Lux
 	 * */
 	
-	ProgramList(){
+	public ProgramList(){
 		
 		float[] buffer = new float[60];
 		
@@ -28,17 +28,17 @@ public class ProgramList {
 		for (int i = 0; i < 59; i++) {
 			buffer[i] = 10*(((float) Math.sin(i*0.105)+1)/2);
 		}
-		this.programs.put("daylight", buffer);
+		this.programs.put("wintertemp", buffer);
 		
 		/* Summer Temperature */
 		for (int i = 0; i < 59; i++) {
 			buffer[i] = 35*(((float) Math.sin(i*0.105)+1)/2);
 		}
-		this.programs.put("daylight", buffer);
+		this.programs.put("summertemp", buffer);
 	}
 	
 	
-	float[] getProgram(String name) {
+	public float[] getProgram(String name) {
 		return programs.get(name);
 	}
 }
