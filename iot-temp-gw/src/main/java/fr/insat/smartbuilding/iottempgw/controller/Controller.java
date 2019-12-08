@@ -57,7 +57,9 @@ public class Controller {
 	@PutMapping("/set/{id}")
 	public Map<String, Object> set(@PathVariable("id") UUID id, @RequestBody Map<String, Object> payload)
 	{
-		sensors.get(id).setValue(Float.parseFloat((String) payload.get("value")));
+		System.out.println("Put /set/{id} arrived : "+payload.toString());
+		int newvalue= (int) payload.get("value");
+		sensors.get(id).setValue((float) newvalue);
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("value",sensors.get(id).readValue());
