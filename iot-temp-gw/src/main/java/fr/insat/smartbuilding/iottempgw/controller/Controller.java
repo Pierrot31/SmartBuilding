@@ -57,7 +57,6 @@ public class Controller {
 	@PutMapping("/set/{id}")
 	public Map<String, Object> set(@PathVariable("id") UUID id, @RequestBody Map<String, Object> payload)
 	{
-		System.out.println("Put /set/{id} arrived : "+payload.toString());
 		int newvalue= (int) payload.get("value");
 		sensors.get(id).setValue((float) newvalue);
 		
@@ -93,11 +92,15 @@ public class Controller {
 	 * In order to start or stop a program :
 	 * curl -XPOST -H "Content-type: application/json" -d '{"status": "true"}' '127.0.0.1:8001/program/{id}'
 	 * UUID of the sensor will be returned.
+	 * !!!!!!
+	 * We should have used a PUT verb here as this action is idempotent, but we do not have time 
+	 * to refactor this and combine this method and the one above in one single method..
+	 * !!!!!!
 	 */
 	@PostMapping(path = "/program/{id}", consumes = "application/json", produces = "application/json")
 	public Map<String, Object> program(@PathVariable("id") UUID id, @RequestBody Map<String, Object> payload) {
 		
-		if (payload.get("status").equals("true")) {
+		if ((boolean) payload.get("status")) {
 			sensors.get(id).startProgram();
 		} else {
 			sensors.get(id).stopProgram();
