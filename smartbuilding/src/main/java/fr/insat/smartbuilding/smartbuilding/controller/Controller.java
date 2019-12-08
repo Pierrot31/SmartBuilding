@@ -20,7 +20,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class Controller {
-
+/*
+ * Temperature : http://127.0.0.1:8001
+ * Hvac : http://127.0.0.1:8002
+ * Brightness : http://127.0.0.1:8003
+ * Lamp : http://127.0.0.1:8004
+ * Door : http://127.0.0.1:8005
+ * Window : http://127.0.0.1:8006
+ */
 
 }
 
