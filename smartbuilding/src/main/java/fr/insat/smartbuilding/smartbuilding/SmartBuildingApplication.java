@@ -20,8 +20,10 @@ public class SmartBuildingApplication {
 		
 		/*Will contain the Master WS handling client-side requests*/
 		
-		/*Following code will end in Controller one day*/
+		/*Following code will end in Controller one day
 		Map<String, VirtualRoom> rooms = new HashMap<String,VirtualRoom>();
+		
+		
 
 		for (int i=0; i<2; i++) {
 			VirtualRoom newVirtualRoom = new VirtualRoom("Room0"+i);
@@ -29,8 +31,10 @@ public class SmartBuildingApplication {
 			newVirtualRoom.addActuator(URI.create("http://127.0.0.1:8002"), "HVAC", true);
 			newVirtualRoom.addSensor(URI.create("http://127.0.0.1:8001"),"Thermometer",(float) 35);
 			rooms.put("Room0"+i,newVirtualRoom);
-		}
-		System.out.println("Status of actuator Room01 : "+rooms.get("Room01").readActuatorStatus("HVAC").toString());
+		}*/
+		
+		
+		/*System.out.println("Status of actuator Room01 : "+rooms.get("Room01").readActuatorStatus("HVAC").toString());
 		rooms.get("Room01").setActuatorStatus("HVAC",false);
 		System.out.println("Status of actuator Room01 : "+rooms.get("Room01").readActuatorStatus("HVAC").toString());
 		
@@ -45,7 +49,7 @@ public class SmartBuildingApplication {
 		System.out.println("Value of sensor Room01 : "+rooms.get("Room01").readSensorValue("Thermometer").toString());
 		rooms.get("Room01").setSensorProgram("Thermometer", true);
 		System.out.println("Value of sensor Room01 : "+rooms.get("Room01").readSensorValue("Thermometer").toString());
-
+		 */
 		
 	}
 
