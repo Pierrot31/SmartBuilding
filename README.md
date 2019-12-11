@@ -25,4 +25,14 @@ Technologies used to do this project : SpringBoot, Maven.
 # How to use:
 
 * This project is made of several maven projects, each one of them representing a separated component.
-* @TODO 
+* Import in eclipse all maven projects from this repository
+* In order to spare your machine memory, change run settings of the jvms for all entry points to -Xmx256M -Xms256M
+* Launch first all iot-xxx-gw apps
+* Launch secondly smartbuilding app : at that stage you have several services listening HTTP on ports 8000 -> 8007
+* Call with curl commandline the API listening on port 8000 to manage our virtual building
+
+```bash
+curl -XPOST -H "Content-type: application/json" -d '{"name": "Room01"}' '127.0.0.1:8000/addroom/'
+curl -XPUT -H "Content-type: application/json" '127.0.0.1:8000/targettemp/30'
+# ...
+```
