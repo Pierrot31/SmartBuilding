@@ -53,4 +53,16 @@ public class VirtualRoom {
 	public void setSensorProgram(String sensorname, Boolean status) {
 		sensoriots.get(sensorname).setProgram(status);
 	}
+	
+	public String getRoomName() {
+		return this.name;
+	}
+	
+	public Map<String,SensorIot> getSensorList() {
+		return this.sensoriots;
+	}
+	
+	public Map<String,ActuatorIot> getActuatorList() {
+		return this.actuatoriots;
+	}
 }

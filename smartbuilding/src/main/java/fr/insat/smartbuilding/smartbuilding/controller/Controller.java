@@ -1,5 +1,8 @@
 package fr.insat.smartbuilding.smartbuilding.controller;
 
+import fr.insat.smartbuilding.smartbuilding.model.ActuatorIot;
+import fr.insat.smartbuilding.smartbuilding.model.BrightnessRegulation;
+import fr.insat.smartbuilding.smartbuilding.model.SensorIot;
 import fr.insat.smartbuilding.smartbuilding.model.TemperatureRegulation;
 import fr.insat.smartbuilding.smartbuilding.model.VirtualRoom;
 
@@ -7,6 +10,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +31,11 @@ public class Controller {
 
 	public static Map<String, VirtualRoom> rooms = new HashMap<String, VirtualRoom>();
     public static VirtualRoom outside = new VirtualRoom("Outside");
+    public static Float targetTemperature;
+    public static Float targetBrightness;
+    public Thread temperatureRegulation ;
+    public Thread brightnessRegulation ;
+
 
 
     @PostMapping(path = "/addroom", consumes = "application/json", produces = "application/json")
@@ -52,18 +61,84 @@ public class Controller {
 
     }
     
-    /*I'm */
-    @PutMapping("/targettemp/{temp}")
+	@PutMapping("/targettemp/{temp}")
     public void setTargetTemp(@PathVariable("temp") Float targettemp) {
-    	Thread t = new Thread(new TemperatureRegulation(targettemp));
-    	t.start();
+    	targetTemperature = targettemp;
+    	System.out.println("Starting Temperature Regulation");
+    	if (temperatureRegulation == null) {
+    		this.temperatureRegulation = new Thread(new TemperatureRegulation());
+        	System.out.println(temperatureRegulation.toString());
+        	this.temperatureRegulation.start();
+    	} 
     }
     
-    /*@PutMapping("/targetbrightness/{brightness}")
-    public void setTargetBrightness(@PathVariable("brightness") Float brightness) {
-       	Thread t = new Thread(new BrightnessRegulation(targetbrightness));
-    	t.start();
-    }*/
+	@PutMapping("/targetbrightness/{brightness}")
+    public void setTargetBrightness(@PathVariable("brightness") Float targetbrightness) {
+    	targetBrightness = targetbrightness;
+    	System.out.println("Starting Brightness Regulation");
+    	if (brightnessRegulation == null) {
+    		this.brightnessRegulation = new Thread(new BrightnessRegulation());
+        	System.out.println(brightnessRegulation.toString());
+        	this.brightnessRegulation.start();
+    	} 
+    }
+	
+	@GetMapping("/getrooms/")
+	public Map<String, Object> getRooms() {
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		for (String room : rooms.keySet()) {
+			response.put("room",room);
+		}
+		return response;
+	}
+	
+	@GetMapping("/getroom/{roomname}/actuators")
+	public Map<String, Object> getActuators(@PathVariable("roomname") String roomname) {
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		Map<String, ActuatorIot> actuators = rooms.get(roomname).getActuatorList();
+		int i = 0;
+		for (String actuator : actuators.keySet()) {
+			response.put("actuator_"+i,actuator);
+			i++;
+		}
+		return response;
+	}
+	
+	@GetMapping("/getroom/{roomname}/sensors")
+	public Map<String, Object> getSensors(@PathVariable("roomname") String roomname) {
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		Map<String,SensorIot> sensors = rooms.get(roomname).getSensorList();
+		int i = 0;
+		for (String sensor : sensors.keySet()) {
+			response.put("sensors_"+i,sensor);
+			i++;
+		}
+		return response;
+	}
+	
+	@GetMapping("/getroom/{roomname}/readsensor/{sensor}")
+	public Map<String, Object> getSensorValue(@PathVariable("roomname") String roomname, @PathVariable("sensor") String sensor) {
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		float value = rooms.get(roomname).readSensorValue(sensor);
+		response.put(sensor,value);
+		return response;
+	}
+	
+	@GetMapping("/getroom/{roomname}/readactuator/{actuator}")
+	public Map<String, Object> getActuatorValue(@PathVariable("roomname") String roomname, @PathVariable("actuator") String actuator) {
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		
+		Boolean value = rooms.get(roomname).readActuatorStatus(actuator);
+		response.put(actuator,value);
+		return response;
+	}
 
     @PutMapping("/lockbuilding/")
     public void lockBuilding() {
