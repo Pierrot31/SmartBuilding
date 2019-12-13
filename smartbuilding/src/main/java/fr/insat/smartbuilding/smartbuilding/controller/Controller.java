@@ -87,9 +87,10 @@ public class Controller {
 	public Map<String, Object> getRooms() {
 		
 		Map<String, Object> response = new HashMap<String, Object>();
-		
+		int i=0;
 		for (String room : rooms.keySet()) {
-			response.put("room",room);
+			response.put("room_"+i,room);
+			i++;
 		}
 		return response;
 	}
@@ -136,8 +137,15 @@ public class Controller {
 		Map<String, Object> response = new HashMap<String, Object>();
 		
 		Boolean value = rooms.get(roomname).readActuatorStatus(actuator);
-		response.put(actuator,value);
+		response.put(actuator,value.toString());
 		return response;
+	}
+	
+	@PutMapping("/getroom/{roomname}/setactuator/{actuator}/{value}")
+	public void setActuatorValue(@PathVariable("roomname") String roomname, @PathVariable("actuator") String actuator, @PathVariable("value") String value) {
+		System.out.println("Boolean : "+value);
+		rooms.get(roomname).setActuatorStatus(actuator, Boolean.parseBoolean(value));
+		
 	}
 
     @PutMapping("/lockbuilding/")
@@ -156,6 +164,9 @@ public class Controller {
     		room.setActuatorStatus("Door",true);
     	}
     }
+    
+    
+    
 }
 
 

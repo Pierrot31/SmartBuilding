@@ -63,7 +63,7 @@ public class ActuatorIot {
 	    Map<String, String> params = new HashMap<String, String>();
 	    params.put("id", this.id.toString());
 	    JSONObject jsonObject = new JSONObject();
-		jsonObject.put("status",status); 
+		jsonObject.put("value",status); 
 	    
 		System.out.println("Sending STATUS update for Actuator :"+jsonObject.toString());
 

@@ -55,7 +55,7 @@ public class Controller {
 	@PutMapping("/status/{id}")
 	public Map<String, Object> set(@PathVariable("id") UUID id, @RequestBody Map<String, Object> payload)
 	{
-		actuators.get(id).setStatus(Boolean.parseBoolean((String) payload.get("value")));
+		actuators.get(id).setStatus((Boolean) payload.get("value"));
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("value",actuators.get(id).getStatus());
