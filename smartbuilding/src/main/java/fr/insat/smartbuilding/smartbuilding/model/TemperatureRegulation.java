@@ -23,19 +23,19 @@ public class TemperatureRegulation implements Runnable {
 				Float currenttemp = room.readSensorValue("Temperature");
 				if (currenttemp < targetTemperature) {
 						if (outsidetemp < targetTemperature) {
-							room.setActuatorStatus("Window",false);
-							room.setActuatorStatus("Hvac",true);
+							room.setActuatorStatus("Window","OFF");
+							room.setActuatorStatus("Hvac","ON");
 						} else {
-							room.setActuatorStatus("Window",true);
-							room.setActuatorStatus("Hvac",false);
+							room.setActuatorStatus("Window","ON");
+							room.setActuatorStatus("Hvac","OFF");
 						}
 				} else if (currenttemp > targetTemperature) {
 					if (outsidetemp < targetTemperature) {
-						room.setActuatorStatus("Window",true);
-						room.setActuatorStatus("Hvac",false);
+						room.setActuatorStatus("Window","ON");
+						room.setActuatorStatus("Hvac","OFF");
 					} else {
-						room.setActuatorStatus("Window",false);
-						room.setActuatorStatus("Hvac",false);
+						room.setActuatorStatus("Window","OFF");
+						room.setActuatorStatus("Hvac","OFF");
 					}
 				}
 				try {

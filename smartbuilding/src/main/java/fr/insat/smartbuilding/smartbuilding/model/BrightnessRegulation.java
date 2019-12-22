@@ -23,19 +23,19 @@ public class BrightnessRegulation implements Runnable {
 				Float currentbrightness = room.readSensorValue("Brightness");
 				if (currentbrightness < targetBrightness) {
 						if (outsidebrightness < targetBrightness) {
-							room.setActuatorStatus("Shutter",false);
-							room.setActuatorStatus("Lamp",true);
+							room.setActuatorStatus("Shutter","OFF");
+							room.setActuatorStatus("Lamp","ON");
 						} else {
-							room.setActuatorStatus("Shutter",true);
-							room.setActuatorStatus("Lamp",false);
+							room.setActuatorStatus("Shutter","ON");
+							room.setActuatorStatus("Lamp","OFF");
 						}
 				} else if (currentbrightness > targetBrightness) {
 					if (outsidebrightness < targetBrightness) {
-						room.setActuatorStatus("Shutter",false);
-						room.setActuatorStatus("Lamp",false);
+						room.setActuatorStatus("Shutter","OFF");
+						room.setActuatorStatus("Lamp","OFF");
 					} else {
-						room.setActuatorStatus("Shutter",true);
-						room.setActuatorStatus("Lamp",false);
+						room.setActuatorStatus("Shutter","ON");
+						room.setActuatorStatus("Lamp","OFF");
 					}
 				}
 				try {
