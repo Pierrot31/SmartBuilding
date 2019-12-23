@@ -6,12 +6,27 @@
 		<link rel = "stylesheet" type = "text/css" href = "smartbuilding.css" />
 		<script type="text/javascript" src="smartbuilding.js"></script>
 	</head>
-	<body>
+	<body onload="loadBuilding();">
 		<center><h1>Welcome to INSA's new Smartbuilding !</h1></center>
 		<hr>
-		<input type="text" id="roomName">
-		<button type="button" onclick="addRoom();">AddRoom</button>
-
-		<div id="roomLists"></div>
+		<table class="center">
+			<tbody id="Table" >
+				<tr>
+					<td colspan="2" style="text-align:center">
+						<input type="text" id="roomName">
+						<button type="button" onclick="addRoom();">AddRoom</button>
+					</td>
+					
+				</tr>
+				<tr>
+					<td style="width:30%">
+						<div id="roomLists"></div>
+					</td>
+					<td style="width:30%">
+						<div id="displayRoom"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</body>
 </html>
