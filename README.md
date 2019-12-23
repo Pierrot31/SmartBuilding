@@ -24,15 +24,31 @@ Technologies used to do this project : SpringBoot, Maven.
 
 # How to use:
 
-* This project is made of several maven projects, each one of them representing a separated component.
+* This project is made of a core service called smartbuilding using a helper for some Model parts.
 * Import in eclipse all maven projects from this repository
 * In order to spare your machine memory, change run settings of the jvms for all entry points to -Xmx256M -Xms256M
-* Launch first all iot-xxx-gw apps
-* Launch secondly smartbuilding app : at that stage you have several services listening HTTP on ports 8000 -> 8007
+* Launch your om2m Infrastructure node and make sure that you've cleaned it's database (*mandatory*) (rm database/indb.*)
+* Launch secondly smartbuilding app : at that stage you have om2m listening on 8080 and the smartbuilding on 8000
 * Call with curl commandline the API listening on port 8000 to manage our virtual building
 
 ```bash
 curl -XPOST -H "Content-type: application/json" -d '{"name": "Room01"}' '127.0.0.1:8000/addroom/'
+curl -XPOST -H "Content-type: application/json" -d '{"name": "Room02"}' '127.0.0.1:8000/addroom/'
+curl -XPUT -H "Content-type: application/json" '127.0.0.1:8000/outside/0/1000/'
 curl -XPUT -H "Content-type: application/json" '127.0.0.1:8000/targettemp/30'
+curl -XPUT -H "Content-type: application/json" '127.0.0.1:8000/targetbrightness/500'
+curl -XGET -H "Content-type: application/json" '127.0.0.1:8000/logs/'
 # ...
+```
+
+History is retrieved in an un-ordered JSON format as this :
+```json
+{
+   "history":{
+      "2019-12-22 at 16:08:51 CET":"Outside environment has been configured with 0.0°C and 1000.0Lux",
+      "2019-12-22 at 16:08:53 CET":"Target temperature 30.0°C has been configured for the whole building",
+      "2019-12-22 at 16:08:56 CET":"All logs have been retrieved",
+      "2019-12-22 at 16:08:47 CET":"Room Room01 added to the Building"
+   }
+}
 ```
