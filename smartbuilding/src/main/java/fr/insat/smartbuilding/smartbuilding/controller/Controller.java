@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ public class Controller {
     
     private History history = new History();
 
+    @CrossOrigin
     @PostMapping(path = "/addroom", consumes = "application/json", produces = "application/json")
     public void addRoom(@RequestBody Map<String, Object> payload) {
     	
@@ -57,6 +59,7 @@ public class Controller {
     }
  
     /*We might need to figure out another way to do this on startup...*/
+    @CrossOrigin
     @PutMapping("/outside/{temp}/{brightness}")
     public void instanciateOutside(@PathVariable("temp") Float outsidetemp, @PathVariable("brightness") Float outsidebrightness) {
     	outside.addSensor(URI.create("http://127.0.0.1:8080"),"Temperature");
@@ -66,6 +69,7 @@ public class Controller {
     	history.put("Outside environment has been configured with "+outsidetemp.toString()+"°C and "+outsidebrightness.toString()+"Lux");
     }
     
+    @CrossOrigin
 	@PutMapping("/targettemp/{temp}")
     public void setTargetTemp(@PathVariable("temp") Float targettemp) {
     	targetTemperature = targettemp;
@@ -78,6 +82,7 @@ public class Controller {
     	history.put("Target temperature "+targettemp.toString()+"°C has been configured for the whole building");
     }
     
+    @CrossOrigin
 	@PutMapping("/targetbrightness/{brightness}")
     public void setTargetBrightness(@PathVariable("brightness") Float targetbrightness) {
     	targetBrightness = targetbrightness;
@@ -89,7 +94,8 @@ public class Controller {
     	} 
     	history.put("Target Brightness "+targetbrightness.toString()+"Lux has been configured for the whole building");
     }
-	
+    
+    @CrossOrigin
 	@GetMapping("/getrooms/")
 	public Map<String, Object> getRooms() {
 		
@@ -102,7 +108,8 @@ public class Controller {
 		history.put("List of all rooms has been retrieved");
 		return response;
 	}
-	
+    
+    @CrossOrigin
 	@GetMapping("/getroom/{roomname}/actuators")
 	public Map<String, Object> getActuators(@PathVariable("roomname") String roomname) {
 		
@@ -116,7 +123,8 @@ public class Controller {
 		history.put("List of all actuators for room "+roomname+" has been requested");
 		return response;
 	}
-	
+    
+    @CrossOrigin
 	@GetMapping("/getroom/{roomname}/sensors")
 	public Map<String, Object> getSensors(@PathVariable("roomname") String roomname) {
 		
@@ -130,7 +138,8 @@ public class Controller {
 		history.put("List of all sensors for room "+roomname+" has been requested");
 		return response;
 	}
-	
+    
+    @CrossOrigin
 	@GetMapping("/getroom/{roomname}/readsensor/{sensor}")
 	public Map<String, Object> getSensorValue(@PathVariable("roomname") String roomname, @PathVariable("sensor") String sensor) {
 		
@@ -142,7 +151,8 @@ public class Controller {
 		return response;
 	}
 	
-	
+    
+    @CrossOrigin
 	@GetMapping("/getroom/{roomname}/readactuator/{actuator}")
 	public Map<String, Object> getActuatorValue(@PathVariable("roomname") String roomname, @PathVariable("actuator") String actuator) {
 		
@@ -153,14 +163,16 @@ public class Controller {
 		history.put("Actuator "+actuator+" in "+roomname+" has been read");
 		return response;
 	}
-	
+    
+    @CrossOrigin
 	@PutMapping("/getroom/{roomname}/setactuator/{actuator}/{value}")
 	public void setActuatorValue(@PathVariable("roomname") String roomname, @PathVariable("actuator") String actuator, @PathVariable("value") String value) {
 		System.out.println("Boolean : "+value);
 		rooms.get(roomname).setActuatorStatus(actuator, value);
 		history.put("Actuator "+actuator+" in "+roomname+" has been set to"+value.toString());
 	}
-
+    
+    @CrossOrigin
     @PutMapping("/lockbuilding/")
     public void lockBuilding() {
     	for (VirtualRoom room : rooms.values()) {
@@ -171,7 +183,8 @@ public class Controller {
     	history.put("The building has been locked, Windows, Doors are closed and Hvac is off");
     	/*stop threads as well*/
     }
-
+    
+    @CrossOrigin
     @PutMapping("/unlockbuilding/")
     public void unlockBuilding() {
     	for (VirtualRoom room : rooms.values()) {
@@ -180,6 +193,7 @@ public class Controller {
     	history.put("The building has been unlocked, Doors are open");
     }
     
+    @CrossOrigin
     @GetMapping("/logs/")
 	public History getLogs() {
 		
