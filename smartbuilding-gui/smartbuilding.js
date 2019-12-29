@@ -59,20 +59,20 @@ function getActuatorStatus(roomName,actuatorName)
 			break;
 			case 'Window':
 				this.responsestatus = serverResponse.Window;
-				console.log(this.responsestatus);
+				//console.log(this.responsestatus);
 			break;
 			case 'Lamp':
 				this.responsestatus = serverResponse.Lamp;
-				console.log(this.responsestatus);
+				//console.log(this.responsestatus);
 			break;
 			case 'Shutter':
 				this.responsestatus = serverResponse.Shutter;
-				console.log(this.responsestatus);
+				//console.log(this.responsestatus);
 				
 			break;
 			case 'Door':
 				this.responsestatus = serverResponse.Door;
-				console.log(this.responsestatus);
+				//console.log(this.responsestatus);
 			break;
 		}
 		return this.responsestatus;
@@ -118,7 +118,7 @@ function displayRoom(roomName) {
 		for (var i in serverResponse) {
 			var newP = document.createElement("p");
 			newP.append(document.createTextNode(serverResponse[i]+" =>" + getActuatorStatus(roomName,serverResponse[i])));
-			console.log("Actuator" + getActuatorStatus(roomName,serverResponse[i]));
+			//console.log("Actuator" + getActuatorStatus(roomName,serverResponse[i]));
 			currentDiv.append(newP);
 		}
 	};
@@ -129,7 +129,73 @@ function displayRoom(roomName) {
 }
 
 
+function historic(){
+	var xhttphistoric = new XMLHttpRequest();
+	xhttphistoric.open("GET", "http://127.0.0.1:8000/logs/", false);
+	xhttphistoric.setRequestHeader("Content-type", "application/json");
+	xhttphistoric.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttphistoric.send();
+	console.log("cool: "+xhttphistoric.responseText);
+	var serverResponse = JSON.parse(xhttphistoric.responseText);
+	console.log("serverResponse: "+ serverResponse);
+	if (typeof serverResponse !== 'undefined') {
+		console.log("serverResponse not define properly");
+	}else{
+		console.log("serverResponse: " +serverResponse);
+		for (var i in serverResponse) {
+			for(var j in serverResponse[i]){
+			console.log("status: " +serverResponse[j]);
+			//console.log("test: "+serverResponse["history"][i].history);
+			return serverResponse[j];
+		}
+		}
+	}
+}
 
+/*function historic(){
+	
+	xhttphistoric.onreadystatechange = function() {
+		console.log("cool: "+xhttphistoric.responseText);
+		console.log("coollllll: "+xhttphistoric.responseText);
+		var serverResponse = JSON.parse(xhttphistoric.responseText);
+		if (typeof serverResponse !== 'undefined') {
+			console.log("serverResponse not define properly");
+		}else{
+			console.log("serverResponse: " +serverResponse);
+
+			for (var i in serverResponse) {
+				console.log("status: " +serverResponse[i]);
+				//console.log("test: "+serverResponse["history"][i].history);
+				return serverResponse[i];
+			}
+		}
+	};
+	xhttphistoric.open("GET", "http://127.0.0.1:8000/logs/", false);
+	xhttphistoric.setRequestHeader("Content-type", "application/json");
+	xhttphistoric.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttphistoric.send();
+	
+}*/
+
+/*function displayHistoric(){
+	var xhttph = new XMLHttpRequest();
+	xhttph.onreadystatechange = function() {
+		var serverResponse = JSON.parse(xhttph.responseText);
+		console.log("serverResponse: " +serverResponse);
+		for (var i in serverResponse) {
+			var newP = document.createElement("p");
+			console.log("histroic: " + historic());
+			newP.append(document.createTextNode(historic()));
+			//console.log("Actuator" + getActuatorStatus(roomName,serverResponse[i]));
+			var currentDiv = document.getElementById("historic");
+			currentDiv.append(newP);
+		}
+	};
+	xhttph.open("GET", "http://127.0.0.1:8000/logs/", true);
+	xhttph.setRequestHeader("Content-type", "application/json");
+	xhttph.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttph.send();
+}*/
 
 
 function addRoomElement(roomName) {
@@ -151,7 +217,7 @@ function loadBuilding() {
 			for (var i in serverResponse) {
 				addRoomElement(serverResponse[i]);
 			}
-	        }
+	    }
 	};
 	xhttp.open("GET", "http://127.0.0.1:8000/getrooms/", true);
 	xhttp.setRequestHeader("Content-type", "application/json");
