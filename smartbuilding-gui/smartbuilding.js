@@ -135,21 +135,25 @@ function historic(){
 	xhttphistoric.setRequestHeader("Content-type", "application/json");
 	xhttphistoric.setRequestHeader("Access-Control-Allow-Origin", "*");
 	xhttphistoric.send();
-	console.log("cool: "+xhttphistoric.responseText);
+	//console.log(xhttphistoric.responseText);
+	//var serverResponseJSON = JSON.stringify(xhttphistoric.responseText);
 	var serverResponse = JSON.parse(xhttphistoric.responseText);
-	console.log("serverResponse: "+ serverResponse);
-	if (typeof serverResponse !== 'undefined') {
-		console.log("serverResponse not define properly");
-	}else{
-		console.log("serverResponse: " +serverResponse);
-		for (var i in serverResponse) {
-			for(var j in serverResponse[i]){
-			console.log("status: " +serverResponse[j]);
-			//console.log("test: "+serverResponse["history"][i].history);
-			return serverResponse[j];
-		}
-		}
+	var serverResponseS = JSON.stringify(serverResponse.history);
+	var tab = JSON.parse(serverResponseS);
+	var resultHistoric = JSON.stringify(tab);
+	var result = JSON.parse(resultHistoric);
+	var m = [];
+	for ( i in result){
+		m[i] = i+ " => "+result[i];
+		console.log(m[i]);
+		var el = document.createElement("p");
+		el.textContent = m[i];
+		document.getElementById("HistoricDiv").appendChild(el);
+ 		
 	}
+	
+	
+	
 }
 
 /*function historic(){
