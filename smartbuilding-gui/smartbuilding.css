@@ -7,10 +7,20 @@
 	margin-bottom: 10px;
 }
 
+.desc {
+	position: static;
+}
+
+.displayRoom {
+	height: 15em;
+	float:center;
+}
+
 table.center {
 	margin-left:auto; 
 	margin-right:auto;
 }
-#HistoricDiv{
+
+#historyDiv{
 	text-align:center;
 }

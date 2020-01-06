@@ -12,26 +12,44 @@
 		<table class="center">
 			<tbody id="Table" >
 				<tr>
-					<td colspan="2" style="text-align:center">
-						<input type="text" id="roomName">
+					<td>
+						<button type="button" onclick="lockBuilding();">Lock the Building !</button>
+						<button type="button" onclick="unlockBuilding();">Unlock the Building !</button>
+						Room Name :<input type="text" id="roomName"><br />
 						<button type="button" onclick="addRoom();">AddRoom</button>
 					</td>
-					
+					<td>Outside Temp : <input type="text" id="outsideTemp"> <br/>
+					    Outside Brightness : <input type="text" id="outsideBrightness"><br/>
+					    <button type="button" onclick="setOutsideParams();">SetOutsideParams</button>
+					</td>
+					<td>Building Target Temp : <input type="text" id="targetTemp"> <br/>
+					    Building Target Brightness : <input type="text" id="targetBrightness"><br/>
+					    <button type="button" onclick="setInsideParams();">SetInsideParams</button>
+					</td>
 				</tr>
 				<tr>
-					<td style="width:30%">
+					<td style="width:20%">
+						<p><b>List of available rooms:</b></p>
+					</td>
+					<td style="width:40%">
+						<div id="desc"><b>Click on a room to display its description</b></div>
+					</td>
+					<td style="width:40%">
+						<p><b>History of actions on smartbuilding : <button type="button" onclick="getHistory();">Refresh History</button></b></p>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:20%;vertical-align: top;">
 						<div id="roomLists"></div>
 					</td>
-					<td style="width:30%">
+					<td style="width:40%;vertical-align: top;">
 						<div id="displayRoom"></div>
+					</td>
+					<td style="width:40%">
+						<div id="historyDiv"></div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<center><h1>Historic</h1></center>
-		<center><button type="button" onclick="historic();">Historic</button></center>
-		<div id="HistoricDiv">
-		</div>
-
 	</body>
 </html>

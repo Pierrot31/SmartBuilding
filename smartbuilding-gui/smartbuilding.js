@@ -1,25 +1,4 @@
-//document.getElementById("roomName").value = "Room02";
-
-
-var serverResponse, responsestatus, global;
-/*function getActuatorStatus(roomName,actuatorName) {
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		
-		 if(this.readyState == 4 && this.status == 200) {
-			serverResponse = JSON.parse(xhttp.responseText);
-			for (var i in serverResponse) {
-				this.responsestatus = serverResponse[i];
-				console.log("In for " + this.responsestatus);
-				document.createTextNode(this.responsestatus);
-			}
-		}
-	};
-	xhttp.open("GET", "http://127.0.0.1:8000/getroom/"+roomName+"/readactuator/"+actuatorName, true);
-	xhttp.setRequestHeader("Content-type", "application/json");
-	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
-	xhttp.send(null);	
-}*/
+var serverResponse, responsestatus;
 
 function getSensorStatus(roomName,sensorName)
 {   
@@ -55,49 +34,47 @@ function getActuatorStatus(roomName,actuatorName)
 		switch (actuatorName){
 			case 'Hvac':
 				this.responsestatus = serverResponse.Hvac;
-				console.log(this.responsestatus);
 			break;
 			case 'Window':
 				this.responsestatus = serverResponse.Window;
-				//console.log(this.responsestatus);
 			break;
 			case 'Lamp':
 				this.responsestatus = serverResponse.Lamp;
-				//console.log(this.responsestatus);
 			break;
 			case 'Shutter':
 				this.responsestatus = serverResponse.Shutter;
-				//console.log(this.responsestatus);
-				
 			break;
 			case 'Door':
 				this.responsestatus = serverResponse.Door;
-				//console.log(this.responsestatus);
 			break;
 		}
 		return this.responsestatus;
 }
 
 function displayRoom(roomName) {
+	document.getElementById("desc").innerHTML = "";
 	document.getElementById("displayRoom").innerHTML = "";
-	var currentDiv = document.getElementById("displayRoom");
 
+	var container = document.getElementById("desc");
 	var newContent = document.createTextNode("Description for room "+roomName);
-	currentDiv.append(newContent);
+	var bold = document.createElement("b");
+	bold.append(newContent);
+	container.append(bold);
 
+	var currentDiv = document.getElementById("displayRoom");
+	var pDesc = document.createElement("p");
+	currentDiv.append(pDesc);
+
+	// Get all sensors and get their values, then display it
         var xhttpsensor = new XMLHttpRequest();
 	xhttpsensor.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var serverResponse = JSON.parse(xhttpsensor.responseText);
-			var pDesc = document.createElement("p");
-			var bold = document.createElement("b");
-			bold.append("Sensors:");
-			pDesc.append(bold);
-			currentDiv.append(pDesc);
 			for (var i in serverResponse) {
-				var newP = document.createElement("p");
-				newP.append(document.createTextNode(serverResponse[i]+ " =>" + getSensorStatus(roomName,serverResponse[i])));
-				currentDiv.append(newP);
+				var textNode = document.createTextNode(serverResponse[i]+ " =>" + getSensorStatus(roomName,serverResponse[i]));
+				currentDiv.append(textNode);
+				var br = document.createElement("br");
+				currentDiv.append(br);
 			}
 		}
 	};
@@ -107,19 +84,15 @@ function displayRoom(roomName) {
 	xhttpsensor.send(null);
 
 	
-		var xhttpactuator = new XMLHttpRequest();
+	// Get all actuators and get their status, then display it
+	var xhttpactuator = new XMLHttpRequest();
 	xhttpactuator.onreadystatechange = function() {
 		var serverResponse = JSON.parse(xhttpactuator.responseText);
-		var pDesc = document.createElement("p");
-		var bold = document.createElement("b");
-		bold.append("Actuators:");
-		pDesc.append(bold);
-		currentDiv.append(pDesc);
 		for (var i in serverResponse) {
-			var newP = document.createElement("p");
-			newP.append(document.createTextNode(serverResponse[i]+" =>" + getActuatorStatus(roomName,serverResponse[i])));
-			//console.log("Actuator" + getActuatorStatus(roomName,serverResponse[i]));
-			currentDiv.append(newP);
+				var textNode = document.createTextNode(serverResponse[i]+ " =>" + getActuatorStatus(roomName,serverResponse[i]));
+				currentDiv.append(textNode);
+				var br = document.createElement("br");
+				currentDiv.append(br);
 		}
 	};
 	xhttpactuator.open("GET", "http://127.0.0.1:8000/getroom/"+roomName+"/actuators", false);
@@ -129,78 +102,24 @@ function displayRoom(roomName) {
 }
 
 
-function historic(){
+function getHistory(){
 	var xhttphistoric = new XMLHttpRequest();
 	xhttphistoric.open("GET", "http://127.0.0.1:8000/logs/", false);
 	xhttphistoric.setRequestHeader("Content-type", "application/json");
 	xhttphistoric.setRequestHeader("Access-Control-Allow-Origin", "*");
 	xhttphistoric.send();
-	//console.log(xhttphistoric.responseText);
-	//var serverResponseJSON = JSON.stringify(xhttphistoric.responseText);
 	var serverResponse = JSON.parse(xhttphistoric.responseText);
-	var serverResponseS = JSON.stringify(serverResponse.history);
-	var tab = JSON.parse(serverResponseS);
-	var resultHistoric = JSON.stringify(tab);
-	var result = JSON.parse(resultHistoric);
-	var m = [];
-	for ( i in result){
-		m[i] = i+ " => "+result[i];
-		console.log(m[i]);
-		var el = document.createElement("p");
-		el.textContent = m[i];
-		document.getElementById("HistoricDiv").appendChild(el);
- 		
+	var serverResponseArray = JSON.stringify(serverResponse.history);
+	var wtf = JSON.parse(JSON.stringify(JSON.parse(JSON.stringify(JSON.parse(xhttphistoric.responseText).history))));
+	var currentDiv = document.getElementById("historyDiv");
+	document.getElementById("historyDiv").innerHTML = "";
+
+	for (var i in wtf) {
+		var newP = document.createElement("p");
+		newP.append(document.createTextNode(i+" =>"+wtf[i]));
+		currentDiv.append(newP);
 	}
-	
-	
-	
 }
-
-/*function historic(){
-	
-	xhttphistoric.onreadystatechange = function() {
-		console.log("cool: "+xhttphistoric.responseText);
-		console.log("coollllll: "+xhttphistoric.responseText);
-		var serverResponse = JSON.parse(xhttphistoric.responseText);
-		if (typeof serverResponse !== 'undefined') {
-			console.log("serverResponse not define properly");
-		}else{
-			console.log("serverResponse: " +serverResponse);
-
-			for (var i in serverResponse) {
-				console.log("status: " +serverResponse[i]);
-				//console.log("test: "+serverResponse["history"][i].history);
-				return serverResponse[i];
-			}
-		}
-	};
-	xhttphistoric.open("GET", "http://127.0.0.1:8000/logs/", false);
-	xhttphistoric.setRequestHeader("Content-type", "application/json");
-	xhttphistoric.setRequestHeader("Access-Control-Allow-Origin", "*");
-	xhttphistoric.send();
-	
-}*/
-
-/*function displayHistoric(){
-	var xhttph = new XMLHttpRequest();
-	xhttph.onreadystatechange = function() {
-		var serverResponse = JSON.parse(xhttph.responseText);
-		console.log("serverResponse: " +serverResponse);
-		for (var i in serverResponse) {
-			var newP = document.createElement("p");
-			console.log("histroic: " + historic());
-			newP.append(document.createTextNode(historic()));
-			//console.log("Actuator" + getActuatorStatus(roomName,serverResponse[i]));
-			var currentDiv = document.getElementById("historic");
-			currentDiv.append(newP);
-		}
-	};
-	xhttph.open("GET", "http://127.0.0.1:8000/logs/", true);
-	xhttph.setRequestHeader("Content-type", "application/json");
-	xhttph.setRequestHeader("Access-Control-Allow-Origin", "*");
-	xhttph.send();
-}*/
-
 
 function addRoomElement(roomName) {
 	var newDiv = document.createElement("div");
@@ -213,7 +132,7 @@ function addRoomElement(roomName) {
 	currentDiv.append(newDiv);
 }
 
-function loadBuilding() {
+function loadRooms() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -229,11 +148,63 @@ function loadBuilding() {
 	xhttp.send();
 }
 
+function loadBuilding() {
+	loadRooms();
+	getHistory();
+}
+
+function lockBuilding() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("PUT", "http://127.0.0.1:8000/lockbuilding/", true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttp.send();
+}
+
+function unlockBuilding() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("PUT", "http://127.0.0.1:8000/unlockbuilding/", true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttp.send();
+}
+
+function setOutsideParams() {
+	//curl -XPUT -H "Content-type: application/json" '127.0.0.1:8000/outside/0/1000/'
+	var outsideBrightness = document.getElementById("outsideBrightness").value;
+	var outsideTemp = document.getElementById("outsideTemp").value;
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("PUT", "http://127.0.0.1:8000/outside/"+outsideTemp+"/"+outsideBrightness+"/", true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttp.send();
+}
+
+
+function setInsideParams() {
+	//curl -XPUT -H "Content-type: application/json" '127.0.0.1:8000/targettemp/30'
+	
+	var targetBrightness = document.getElementById("targetBrightness").value;
+	var targetTemp = document.getElementById("targetTemp").value;
+
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("PUT", "http://127.0.0.1:8000/targettemp/"+targetTemp, true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttp.send();
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("PUT", "http://127.0.0.1:8000/targetbrightness/"+targetBrightness, true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttp.send();
+}
+
 function addRoom() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-	        // Here call a function that adds a room display
 			addRoomElement(document.getElementById("roomName").value);
 			displayRoom(document.getElementById("roomName").value);
 	        }
