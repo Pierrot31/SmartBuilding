@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class Controller {
 
 	public static Map<String, VirtualRoom> rooms = new HashMap<String, VirtualRoom>();
-    public static VirtualRoom outside = new VirtualRoom("Outside",URI.create("http://127.0.0.1:8080"));
+    public static VirtualRoom outside ;
     public static Float targetTemperature;
     public static Float targetBrightness;
     public Thread temperatureRegulation ;
     public Thread brightnessRegulation ;
+    private Boolean doesOutsideExists = false;
     
     private History history = new History();
 
@@ -61,11 +62,18 @@ public class Controller {
     /*We might need to figure out another way to do this on startup...*/
     @CrossOrigin
     @PutMapping("/outside/{temp}/{brightness}")
-    public void instanciateOutside(@PathVariable("temp") Float outsidetemp, @PathVariable("brightness") Float outsidebrightness) {
-    	outside.addSensor(URI.create("http://127.0.0.1:8080"),"Temperature");
+    public void outside(@PathVariable("temp") Float outsidetemp, @PathVariable("brightness") Float outsidebrightness) {
+    	
+    	if (!doesOutsideExists) {
+    		outside = new VirtualRoom("Outside",URI.create("http://127.0.0.1:8080"));
+    		outside.addSensor(URI.create("http://127.0.0.1:8080"),"Temperature");
+    		outside.addSensor(URI.create("http://127.0.0.1:8080"),"Brightness");
+    		doesOutsideExists = true;
+    	}
+    	
     	outside.setSensorValue("Temperature", outsidetemp, "Degree");
-    	outside.addSensor(URI.create("http://127.0.0.1:8080"),"Brightness");
     	outside.setSensorValue("Brightness", outsidebrightness, "Lux");
+    	
     	history.put("Outside environment has been configured with "+outsidetemp.toString()+"°C and "+outsidebrightness.toString()+"Lux");
     }
     
@@ -196,8 +204,6 @@ public class Controller {
     @CrossOrigin
     @GetMapping("/logs/")
 	public History getLogs() {
-		
-		history.put("All logs have been retrieved");
 		
 		return history;
 	}
