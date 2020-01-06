@@ -55,3 +55,7 @@ History is retrieved in an un-ordered JSON format as this :
    }
 }
 ```
+
+# Here is what the GUI should look like:
+
+![Alt text](gui-sample.png?raw=true "GUI display example")
