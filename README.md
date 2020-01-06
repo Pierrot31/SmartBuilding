@@ -26,10 +26,13 @@ Technologies used to do this project : SpringBoot, Maven.
 
 * This project is made of a core service called smartbuilding using a helper for some Model parts.
 * Import in eclipse all maven projects from this repository
-* In order to spare your machine memory, change run settings of the jvms for all entry points to -Xmx256M -Xms256M
-* Launch your om2m Infrastructure node and make sure that you've cleaned it's database (*mandatory*) (rm database/indb.*)
+* Launch first your om2m Infrastructure node and make sure that you've cleaned it's database (*mandatory*) (rm database/indb.*)
 * Launch secondly smartbuilding app : at that stage you have om2m listening on 8080 and the smartbuilding on 8000
-* Call with curl commandline the API listening on port 8000 to manage our virtual building
+* Call with curl commandline the API listening on port 8000 to manage our virtual building by hand, or open smartbuilding-gui/index.html for javascript control.
+* When using the javascript interface :
+** Create rooms only with [a-zA-Z0-9]
+** When setting outside temperatures and brightness, fill both input forms with numerical value before submitting
+** When setting target temperatures and brightness, make sure you've set before outside parameters, and fill both input forms with numerical value before submitting
 
 ```bash
 curl -XPOST -H "Content-type: application/json" -d '{"name": "Room01"}' '127.0.0.1:8000/addroom/'
