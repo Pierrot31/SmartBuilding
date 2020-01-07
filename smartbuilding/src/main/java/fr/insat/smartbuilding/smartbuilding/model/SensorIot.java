@@ -88,44 +88,5 @@ public class SensorIot {
 		restTemplate.postForEntity(this.gateway.toString()+"~/in-cse/in-name/"+this.room+"/"+this.name,request,String.class);
 		
 	}
-
-	/*
-	public void addProgram(float[] program) {
-
-		RestTemplate restTemplate = new RestTemplate();
-
-	    Map<String, String> params = new HashMap<String, String>();
-	    params.put("id", this.id.toString());
-	    JSONObject jsonObject = new JSONObject();
-		jsonObject.put("program",program); 
-	    
-		System.out.println("Sending Program update for Sensor :"+jsonObject.toString());
-		
-		HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> request = new HttpEntity<>(jsonObject.toString(),headers);
-
-	    restTemplate.exchange(this.gateway.toString()+"/program/{id}",HttpMethod.PUT,request,String.class,params);
-	    System.out.println("Done Program update for Sensor :"+this.id.toString());
-	}
-	
-	public void setProgram(Boolean activate) {
-		
-		RestTemplate restTemplate = new RestTemplate();
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("status", activate);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> request = new HttpEntity<>(jsonObject.toString(),headers);
-		
-		System.out.println("Sending Program Status update for Sensor :"+jsonObject.toString());
-		
-		restTemplate.postForEntity(this.gateway.toString()+"/program/"+this.id.toString(),request,String.class);
-		
-		System.out.println("Done Program Status update for Sensor :"+jsonObject.toString());
-
-	}*/
 	
 }

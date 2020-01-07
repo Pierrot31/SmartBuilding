@@ -70,15 +70,6 @@ public class VirtualRoom {
 		sensoriots.get(sensorname).setValue(value,unit);
 	}
 	
-	/*
-	public void addSensorProgram(String sensorname, float[] program) {
-		sensoriots.get(sensorname).addProgram(program);
-	}
-	
-	public void setSensorProgram(String sensorname, Boolean status) {
-		sensoriots.get(sensorname).setProgram(status);
-	}*/
-	
 	public String getRoomName() {
 		return this.name;
 	}
