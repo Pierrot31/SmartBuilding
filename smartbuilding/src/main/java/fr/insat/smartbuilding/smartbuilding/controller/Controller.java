@@ -3,9 +3,11 @@ package fr.insat.smartbuilding.smartbuilding.controller;
 import fr.insat.smartbuilding.smartbuilding.model.ActuatorIot;
 import fr.insat.smartbuilding.smartbuilding.model.BrightnessRegulation;
 import fr.insat.smartbuilding.smartbuilding.model.History;
+import fr.insat.smartbuilding.smartbuilding.model.ProgramList;
 import fr.insat.smartbuilding.smartbuilding.model.SensorIot;
 import fr.insat.smartbuilding.smartbuilding.model.TemperatureRegulation;
 import fr.insat.smartbuilding.smartbuilding.model.VirtualRoom;
+import fr.insat.smartbuilding.smartbuilding.model.WeatherSimulation;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -28,7 +30,10 @@ public class Controller {
     public static Float targetBrightness;
     public Thread temperatureRegulation ;
     public Thread brightnessRegulation ;
+    private Thread weatherSimulation;
     private Boolean doesOutsideExists = false;
+    public static ProgramList programs = new ProgramList();
+	public static String outsideTempSimulation;
     
     private History history = new History();
 
@@ -64,11 +69,16 @@ public class Controller {
     @PutMapping("/outside/{temp}/{brightness}")
     public void outside(@PathVariable("temp") Float outsidetemp, @PathVariable("brightness") Float outsidebrightness) {
     	
+    	
     	if (!doesOutsideExists) {
     		outside = new VirtualRoom("Outside",URI.create("http://127.0.0.1:8080"));
     		outside.addSensor(URI.create("http://127.0.0.1:8080"),"Temperature");
     		outside.addSensor(URI.create("http://127.0.0.1:8080"),"Brightness");
     		doesOutsideExists = true;
+    	}
+    	
+    	if (weatherSimulation != null) {
+    		weatherSimulation.interrupt();
     	}
     	
     	outside.setSensorValue("Temperature", outsidetemp, "Degree");
@@ -86,7 +96,12 @@ public class Controller {
     		this.temperatureRegulation = new Thread(new TemperatureRegulation());
         	System.out.println(temperatureRegulation.toString());
         	this.temperatureRegulation.start();
-    	} 
+    	} else {
+    		this.temperatureRegulation.destroy();
+    		this.temperatureRegulation = new Thread(new TemperatureRegulation());
+        	System.out.println(temperatureRegulation.toString());
+        	this.temperatureRegulation.start();
+    	}
     	history.put("Target temperature "+targettemp.toString()+"°C has been configured for the whole building");
     }
     
@@ -99,7 +114,12 @@ public class Controller {
     		this.brightnessRegulation = new Thread(new BrightnessRegulation());
         	System.out.println(brightnessRegulation.toString());
         	this.brightnessRegulation.start();
-    	} 
+    	} else {
+    		this.brightnessRegulation.destroy();
+    		this.brightnessRegulation = new Thread(new BrightnessRegulation());
+        	System.out.println(brightnessRegulation.toString());
+        	this.brightnessRegulation.start();
+    	}
     	history.put("Target Brightness "+targetbrightness.toString()+"Lux has been configured for the whole building");
     }
     
@@ -207,6 +227,36 @@ public class Controller {
 		
 		return history;
 	}
+    
+    @CrossOrigin
+ 	@PutMapping("/setprogram/{programname}")
+ 	public void setProgramName(@PathVariable("programname") String programname) {
+    	
+    	if (!doesOutsideExists) {
+    		outside = new VirtualRoom("Outside",URI.create("http://127.0.0.1:8080"));
+    		outside.addSensor(URI.create("http://127.0.0.1:8080"),"Temperature");
+    		outside.addSensor(URI.create("http://127.0.0.1:8080"),"Brightness");
+    		doesOutsideExists = true;
+    	}
+    	
+    	switch (programname) {
+    	case "winter":
+    		this.outsideTempSimulation = "wintertemp";
+    		break;
+    	case "summer":
+    		this.outsideTempSimulation = "summertemp";
+    		break;
+    	default:
+    		this.outsideTempSimulation = "summertemp";
+    	}
+    	
+    	if (weatherSimulation == null) {
+    		this.weatherSimulation = new Thread(new WeatherSimulation());
+	    	this.weatherSimulation.start();
+    	} else if (weatherSimulation.isInterrupted()) {
+    		weatherSimulation.run();
+    	}
+ 	}
 }
 
 
