@@ -9,47 +9,49 @@
 	<body onload="loadBuilding();">
 		<center><h1>Welcome to INSA's new Smartbuilding !</h1></center>
 		<hr>
-		<table class="center">
+		<table class="center" cellpadding=20>
 			<tbody id="Table" >
 				<tr>
-					<td>
+					<td style="vertical-align: top;">
+						<p><b>Interact with the building:</b></p>
 						<button type="button" onclick="lockBuilding();">Lock the Building !</button>
+						<br/>
+						<br/>
 						<button type="button" onclick="unlockBuilding();">Unlock the Building !</button>
-						Room Name :<input type="text" id="roomName"><br />
+						<br/>
+						<br/>
+						Room Name :<input size="10" type="text" id="roomName">
+						<br/>
 						<button type="button" onclick="addRoom();">AddRoom</button>
+						<br/>
+						<br/>
+						Outside Temp : <input size="4" type="text" id="outsideTemp">
+						<br/>
+						Outside Brightness : <input size="4" type="text" id="outsideBrightness">
+						<br/>
+						<button type="button" onclick="setOutsideParams();">SetOutsideParams</button>
+						<br/>
+						<br/>
+						Building Target Temp : <input size="4" type="text" id="targetTemp">
+						<br/>
+						Building Target Brightness : <input size="4" type="text" id="targetBrightness">
+						<br/>
+						<button type="button" onclick="setInsideParams();">SetInsideParams</button>
 					</td>
-					<td>Outside Temp : <input type="text" id="outsideTemp"> <br/>
-					    Outside Brightness : <input type="text" id="outsideBrightness"><br/>
-					    <button type="button" onclick="setOutsideParams();">SetOutsideParams</button>
-					</td>
-					<td>Building Target Temp : <input type="text" id="targetTemp"> <br/>
-					    Building Target Brightness : <input type="text" id="targetBrightness"><br/>
-					    <button type="button" onclick="setInsideParams();">SetInsideParams</button>
-					</td>
-				</tr>
-				<tr>
-					<td style="width:20%">
+					<td style="vertical-align: top;">
 						<p><b>List of available rooms:</b></p>
-					</td>
-					<td style="width:40%">
-						<div id="desc"><b>Click on a room to display its description</b></div>
-					</td>
-					<td style="width:40%">
-						<p><b>History of actions on smartbuilding : <button type="button" onclick="getHistory();">Refresh History</button></b></p>
-					</td>
-				</tr>
-				<tr>
-					<td style="width:20%;vertical-align: top;">
+						<br/>
 						<div id="roomLists"></div>
 					</td>
-					<td style="width:40%;vertical-align: top;">
+					<td style="vertical-align: top;">
+						<div id="desc"><b>Click on a room to display its description</b></div>
+						<br/>
 						<div id="displayRoom"></div>
-					</td>
-					<td style="width:40%">
-						<div id="historyDiv"></div>
 					</td>
 				</tr>
 			</tbody>
 		</table>
+		<p align="center"><b>History of actions on smartbuilding : <button type="button" onclick="getHistory();">Refresh History</button></b></p>
+		<div id="historyDiv"></div>
 	</body>
 </html>
