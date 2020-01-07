@@ -16,25 +16,28 @@ public class ProgramList {
 	
 	public ProgramList(){
 		
-		float[] buffer = new float[60];
+		float[] buffer1 = new float[60];
+		float[] buffer2 = new float[60];
+		float[] buffer3 = new float[60];
+
 		
 		/* Day Luminance */
 		for (int i = 0; i < 59; i++) {
-			buffer[i] = 200*(((float) Math.sin(i*0.105)+1)/2);
+			buffer1[i] = 200*(((float) Math.sin(i*0.105)+1)/2);
 		}
-		this.programs.put("daylight", buffer);
+		this.programs.put("daylight", buffer1);
 		
 		/* Winter Temperature */
 		for (int i = 0; i < 59; i++) {
-			buffer[i] = 10*(((float) Math.sin(i*0.105)+1)/2);
+			buffer2[i] = 10*(((float) Math.sin(i*0.105)+1)/2);
 		}
-		this.programs.put("wintertemp", buffer);
+		this.programs.put("wintertemp", buffer2);
 		
 		/* Summer Temperature */
 		for (int i = 0; i < 59; i++) {
-			buffer[i] = 35*(((float) Math.sin(i*0.105)+1)/2);
+			buffer3[i] = 35*(((float) Math.sin(i*0.105)+1)/2);
 		}
-		this.programs.put("summertemp", buffer);
+		this.programs.put("summertemp", buffer3);
 	}
 	
 	
