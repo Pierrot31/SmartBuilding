@@ -169,6 +169,22 @@ function unlockBuilding() {
 	xhttp.send();
 }
 
+function setOutsideWinter() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("PUT", "http://127.0.0.1:8000/setprogram/winter", true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttp.send();
+}
+
+function setOutsideSummer() {
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("PUT", "http://127.0.0.1:8000/setprogram/winter", true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+	xhttp.send();
+}
+
 function setOutsideParams() {
 	//curl -XPUT -H "Content-type: application/json" '127.0.0.1:8000/outside/0/1000/'
 	var outsideBrightness = document.getElementById("outsideBrightness").value;
