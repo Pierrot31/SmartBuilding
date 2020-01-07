@@ -39,6 +39,8 @@ public class ProgramList {
 	
 	
 	public float[] getProgram(String name) {
+		System.out.println("program retrieved: "+name);
+		System.out.println(programs.get(name).toString());
 		return programs.get(name);
 	}
 }

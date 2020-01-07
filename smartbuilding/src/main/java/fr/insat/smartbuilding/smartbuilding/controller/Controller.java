@@ -242,12 +242,15 @@ public class Controller {
     	switch (programname) {
     	case "winter":
     		this.outsideTempSimulation = "wintertemp";
+    		history.put("Winter has been configured for outside");
     		break;
     	case "summer":
     		this.outsideTempSimulation = "summertemp";
+    		history.put("Summer has been configured for outside");
     		break;
     	default:
     		this.outsideTempSimulation = "summertemp";
+    		history.put("Summer has been configured for outside");
     	}
     	
     	if (weatherSimulation == null) {
