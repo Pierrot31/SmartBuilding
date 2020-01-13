@@ -5,37 +5,37 @@ import fr.insat.smartbuilding.smartbuilding.controller.Controller;
 public class TemperatureRegulation implements Runnable {
 	
 	/**/
-	Thread thread;	
-
+	Thread thread;
 	
-	public TemperatureRegulation() {
-
+	private Float targettemp;
+	
+	public TemperatureRegulation(Float targettemp) {
+		this.targettemp = targettemp;
 	}
-	
+
 	public void run() {
 
 		while (true) {
-
+			
+			
 			Float outsidetemp = Controller.outside.readSensorValue("Temperature");
-			Float targetTemperature = Controller.targetTemperature;
 			for (VirtualRoom room : Controller.rooms.values()) {
-				System.out.println("Inside Temperature Regulation Thread, target : "+targetTemperature);
 				Float currenttemp = room.readSensorValue("Temperature");
-				if (currenttemp < targetTemperature) {
-						if (outsidetemp < targetTemperature) {
-							room.setActuatorStatus("Window","OFF");
-							room.setActuatorStatus("Hvac","ON");
+				if (currenttemp < targettemp) {
+						if (outsidetemp < targettemp) {
+							room.setActuatorStatus("Window",false);
+							room.setActuatorStatus("Hvac",true);
 						} else {
-							room.setActuatorStatus("Window","ON");
-							room.setActuatorStatus("Hvac","OFF");
+							room.setActuatorStatus("Window",true);
+							room.setActuatorStatus("Hvac",false);
 						}
-				} else if (currenttemp > targetTemperature) {
-					if (outsidetemp < targetTemperature) {
-						room.setActuatorStatus("Window","ON");
-						room.setActuatorStatus("Hvac","OFF");
+				} else if (currenttemp > targettemp) {
+					if (outsidetemp < targettemp) {
+						room.setActuatorStatus("Window",true);
+						room.setActuatorStatus("Hvac",false);
 					} else {
-						room.setActuatorStatus("Window","OFF");
-						room.setActuatorStatus("Hvac","OFF");
+						room.setActuatorStatus("Window",false);
+						room.setActuatorStatus("Hvac",false);
 					}
 				}
 				try {
