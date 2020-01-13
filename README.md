@@ -24,16 +24,17 @@ Technologies used to do this project : SpringBoot, Maven.
 
 # How to use:
 
-* This project is made of a core service called smartbuilding using a helper for some Model parts.
-* Import in eclipse all maven projects from this repository
-* Launch first your om2m Infrastructure node and make sure that you've cleaned it's database (*mandatory*) (rm database/indb.*)
-* Launch secondly smartbuilding app : at that stage you have om2m listening on 8080 and the smartbuilding on 8000
-* Call with curl commandline the API listening on port 8000 to manage our virtual building by hand, or open smartbuilding-gui/index.html for javascript control.
+This project is made of a core service called smartbuilding and requires a browser and a OM2M infrastructure node running with default credentials (admin:admin) :
+* Import in eclipse the maven project from this repository 
+* First, launch your om2m Infrastructure node and make sure that you've cleaned it's database before (*mandatory*). In order to do that, delete DB files under the main directory of OM2M (rm database/indb.*)
+* Secondly, launch the smartbuilding app : at that stage you have om2m listening on 8080 and the smartbuilding on 8000
+* Call with curl commandline the API listening on port 8000 to manage our virtual building by hand, or open smartbuilding-gui/index.html inside a browser for javascript control.
 * When using the javascript interface :
 ** Create rooms only with [a-zA-Z0-9]
 ** When setting outside temperatures and brightness, fill both input forms with numerical value before submitting
-** When setting target temperatures and brightness, make sure you've set before outside parameters, and fill both input forms with numerical value before submitting
+** When setting target temperatures and brightness, make sure you've set "outside" parameters before, and fill both input forms with numerical value before submitting
 
+Curl can be used to make direct calls to the REST API:
 ```bash
 curl -XPOST -H "Content-type: application/json" -d '{"name": "Room01"}' '127.0.0.1:8000/addroom/'
 curl -XPOST -H "Content-type: application/json" -d '{"name": "Room02"}' '127.0.0.1:8000/addroom/'
@@ -44,18 +45,10 @@ curl -XGET -H "Content-type: application/json" '127.0.0.1:8000/logs/'
 # ...
 ```
 
-History is retrieved in an un-ordered JSON format as this :
-```json
-{
-   "history":{
-      "2019-12-22 at 16:08:51 CET":"Outside environment has been configured with 0.0°C and 1000.0Lux",
-      "2019-12-22 at 16:08:53 CET":"Target temperature 30.0°C has been configured for the whole building",
-      "2019-12-22 at 16:08:56 CET":"All logs have been retrieved",
-      "2019-12-22 at 16:08:47 CET":"Room Room01 added to the Building"
-   }
-}
-```
-
 # Here is what the GUI should look like:
 
 ![Alt text](gui-sample.png?raw=true "GUI display example")
+
+# Here is what is corresponding inside OM2M:
+
+![Alt text](om2m-sample.png?raw=true "GUI display example")
